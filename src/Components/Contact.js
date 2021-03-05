@@ -1,7 +1,9 @@
 import React, { useState } from "react";
 import "../App.css";
 import { db } from "../firebase";
-import firebase from "firebase";
+// import firebase from "firebase";
+// import "firebase/auth";
+
 
 const Contact = () => {
   const [name, setName] = useState("");
@@ -14,29 +16,26 @@ const Contact = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+
+    // let recaptcha = new firebase.auth.RecaptchaVerifier("recaptcha");
+    // let number = phone;
+    // firebase.auth.signInWithPhonenumber(number, recaptcha).then((e) => {
+    //   let code = prompt("Enter the otp");
+    //   if (code == null) return;
+    //   e.confirm(code)
+    //     .then((result) => {
+    //       console.log(result.user, "user");
+    //       document.querySelector(
+    //         "button"
+    //       ).textContent = `${result.user}Number verified`;
+    //     })
+    //     .catch((error) => {
+    //       console.log(error);
+    //     });
+    // }).catch(error=> {
+    //     console.log(error)
+    // });
     setLoader(true);
-
-    firebase.auth().settings.appVerificationDisabledForTesting = true;
-
-    var phoneNumber = setPhone;
-    var testVerificationCode = "123456";
-
-    // This will render a fake reCAPTCHA as appVerificationDisabledForTesting is true.
-    // This will resolve after rendering without app verification.
-    var appVerifier = new firebase.auth.RecaptchaVerifier(
-      "recaptcha-container"
-    );
-    // signInWithPhoneNumber will call appVerifier.verify() which will resolve with a fake
-    // reCAPTCHA response.
-    firebase
-      .auth()
-      .signInWithPhoneNumber(phoneNumber, appVerifier)
-      .then(function (confirmationResult) {
-        return confirmationResult.confirm(testVerificationCode);
-      })
-      .catch(function (error) {
-        console.log("error occured");
-      });
 
     db.collection("contacts")
       .add({
@@ -65,7 +64,7 @@ const Contact = () => {
   return (
     <div className="dir">
       <form className="form" onSubmit={handleSubmit}>
-        <h1>Contact Form </h1>
+        <h1 style={{ textAlign: "center" }}>Contact Form </h1>
 
         <label>Name</label>
         <input
@@ -101,7 +100,7 @@ const Contact = () => {
           value={address}
           onChange={(e) => setAddress(e.target.value)}
         ></textarea>
-
+        <lable></lable>
         <button
           type="submit"
           style={{ background: loader ? "#ccc" : "rgb(2,2,110)" }}
